@@ -16,13 +16,27 @@
         </button>
       </form>
       <h2>Items</h2>
-      <ul class="list-group mb-4">
+      <ul class="list-unstyled mb-4">
         {% for item in items %}
           <li>
-            {{ item.title }}
+            <form method="post" action="{{ '/items/{id}/toggle'.format(id = item.id) }}">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="check-item-{{ item.id }}"
+                  type="checkbox"
+                  onChange="this.form.submit()"
+                  {% if item.status == "Complete" %}
+                    checked
+                  {% endif %}
+                />
+                <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+              </div>
+            </form>
           </li>
         {% endfor %}
       </ul>
+
     </div>
   </div>
 {% endblock %}

@@ -16,3 +16,11 @@ def index():
 def add_item():
     session_items.add_item(request.form.get('new_item'))
     return redirect('/')
+
+
+@app.route('/items/<id>/toggle', methods=['POST'])
+def toggle_item(id):
+    item = session_items.get_item(id)
+    item['status'] = ('Not Started' if item['status'] == 'Complete' else 'Complete')
+    session_items.save_item(item)
+    return redirect('/')
