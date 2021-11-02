@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-md-12">
       <form method="post" action="/items">
-        <input name="new_item" type="text" />
+        <input name="new_item" type="text" required/>
         <button type="submit">
             Add item
         </button>
@@ -19,7 +19,7 @@
       <ul class="list-unstyled mb-4">
         {% for item in items %}
           <li>
-            <form method="post" action="{{ '/items/{id}/toggle'.format(id = item.id) }}">
+            <form method="post" action="/items/{{item.id}}/toggle">
               <div class="form-check">
                 <input
                   class="form-check-input"
