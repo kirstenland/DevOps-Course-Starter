@@ -9,10 +9,34 @@
 
   <div class="row">
     <div class="col-md-12">
+      <form method="post" action="/items">
+        <input name="new_item" type="text" required/>
+        <button type="submit">
+            Add item
+        </button>
+      </form>
       <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+      <ul class="list-unstyled mb-4">
+        {% for item in items %}
+          <li>
+            <form method="post" action="/items/{{item.id}}/toggle">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="check-item-{{ item.id }}"
+                  type="checkbox"
+                  onChange="this.form.submit()"
+                  {% if item.status == "Complete" %}
+                    checked
+                  {% endif %}
+                />
+                <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+              </div>
+            </form>
+          </li>
+        {% endfor %}
       </ul>
+
     </div>
   </div>
 {% endblock %}
