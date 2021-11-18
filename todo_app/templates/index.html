@@ -26,7 +26,7 @@
                   id="check-item-{{ item.id }}"
                   type="checkbox"
                   onChange="this.form.submit()"
-                  {% if item.status == "Complete" %}
+                  {% if item.status == "Done" %}
                     checked
                   {% endif %}
                 />
