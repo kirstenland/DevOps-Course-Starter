@@ -9,7 +9,7 @@ app.config.from_object(Config())
 
 @app.route('/')
 def index():
-    items = sorted(trello_items.get_items(), key=lambda item: item['status'] == 'Done')
+    items = sorted(trello_items.get_items(), key=lambda item: item.status == 'Done')
     return render_template('index.html', items=items)
 
 
