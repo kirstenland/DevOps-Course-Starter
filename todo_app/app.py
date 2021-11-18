@@ -20,9 +20,12 @@ def add_item():
     return redirect('/')
 
 
-@app.route('/items/<id>/toggle', methods=['POST'])
-def toggle_item(id):
-    item = session_items.get_item(id)
-    item['status'] = ('Not Started' if item['status'] == 'Complete' else 'Complete')
-    session_items.save_item(item)
+@app.route('/items/<id>/complete', methods=['POST'])
+def complete_item(id):
+    trello_items.update_status(id, 'Done')
+    return redirect('/')
+
+@app.route('/items/<id>/uncomplete', methods=['POST'])
+def uncomplete_item(id):
+    trello_items.update_status(id, 'To Do')
     return redirect('/')

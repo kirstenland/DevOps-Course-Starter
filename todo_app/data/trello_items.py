@@ -61,3 +61,33 @@ def add_item(title):
         'title': new_item['name'],
         'status': list_name
     }
+
+def update_status(item_id, new_status):
+    """
+    Updates the status of the specified item
+
+    Args:
+        item_id: The id of the item.
+        new_status: The desired new status of the item.
+
+    Returns:
+        item: The updated item.
+    """
+    trello_list = get_list(new_status)
+
+    edit_card_url = TRELLO_BASE_URL + "/1/cards/" + item_id
+    request_body = {
+        'idList': trello_list['id'],
+    }
+
+    updated_item = requests.put(
+        edit_card_url,
+        params=get_auth_params(),
+        data=request_body
+    ).json()
+
+    return {
+        'id': updated_item['id'],
+        'title': updated_item['name'],
+        'status': new_status
+    }
