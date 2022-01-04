@@ -1,5 +1,5 @@
 import requests
-from todo_app.data.Item import Item
+from todo_app.data.item import Item
 
 from todo_app.data.trello_config import TrelloConfig
 
