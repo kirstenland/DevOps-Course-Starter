@@ -17,7 +17,7 @@
       </form>
       <h2>Items</h2>
       <ul class="list-unstyled mb-4">
-        {% for item in items %}
+        {% for item in view_model.items %}
           <li>
             <form method="post" action="{{url_for('uncomplete_item' if item.status == 'Done' else 'complete_item', id=item.id)}}">
               <div class="form-check">
