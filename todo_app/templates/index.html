@@ -15,20 +15,37 @@
             Add item
         </button>
       </form>
-      <h2>Items</h2>
+      <h2>To Do</h2>
       <ul class="list-unstyled mb-4">
-        {% for item in view_model.items %}
+        {% for item in view_model.to_do_items %}
           <li>
-            <form method="post" action="{{url_for('uncomplete_item' if item.status == 'Done' else 'complete_item', id=item.id)}}">
+            <form method="post" action="{{url_for('complete_item', id=item.id)}}">
               <div class="form-check">
                 <input
                   class="form-check-input"
                   id="check-item-{{ item.id }}"
                   type="checkbox"
                   onChange="this.form.submit()"
-                  {% if item.status == "Done" %}
-                    checked
-                  {% endif %}
+                />
+                <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+              </div>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <h2>Done</h2>
+      <ul class="list-unstyled mb-4">
+        {% for item in view_model.done_items %}
+          <li>
+            <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="check-item-{{ item.id }}"
+                  type="checkbox"
+                  onChange="this.form.submit()"
+                  checked
                 />
                 <label for="check-item-{{ item.id }}">{{ item.title }}</label>
               </div>
