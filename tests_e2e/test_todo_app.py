@@ -2,9 +2,16 @@ import os
 from dotenv import load_dotenv, find_dotenv
 from threading import Thread
 import pytest
+from selenium import webdriver
 
 from tests_e2e.trello_board_helpers import create_trello_board, delete_trello_board
 from todo_app import app
+
+@pytest.fixture(scope="module")
+def driver():
+    with webdriver.Firefox() as driver:
+        yield driver
+
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
@@ -25,5 +32,6 @@ def app_with_temp_board():
     thread.join(1)
     delete_trello_board(board_id)
 
-def test_add_an_item(app_with_temp_board):
-    pass
+def test_task_journey(driver, app_with_temp_board):
+    driver.get('http://localhost:5000/')
+    assert driver.title == 'To-Do App'
