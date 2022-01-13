@@ -76,9 +76,9 @@ $ poetry run pytest tests/integration_tests
 
 The end to end tests are in a separate folder called `tests_e2e`.
 
-To run the end to end tests, you will need to download the [Firefox browser](https://www.mozilla.org/en-GB/firefox/windows/) and the [geckodriver](https://github.com/mozilla/geckodriver/releases) executable. Add the geckodriver executable's location to your path variable.
+To run the end to end tests, you will need to download the [Firefox browser](https://www.mozilla.org/en-GB/firefox/windows/) and the [geckodriver](https://github.com/mozilla/geckodriver/releases) executable. Add the geckodriver executable's location to your path environment variable.
 
-To run these tests, you need to be able to create a board on trello automatically, for which you may need an organisation id. Add this to the `.env` file.
+To run these tests, you need to be able to create a board on trello automatically, for which you may need your organization id from trello. The end to end tests use your `.env` file, so add this there.
 
 You can run the end to end tests using the command
 ```bash

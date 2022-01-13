@@ -16,9 +16,9 @@
         </button>
       </form>
       <h2>To Do</h2>
-      <ul class="list-unstyled mb-4">
+      <ul class="list-unstyled mb-4" id="to-do-items">
         {% for item in view_model.to_do_items %}
-          <li>
+          <li class="to-do-item">
             <form method="post" action="{{url_for('complete_item', id=item.id)}}">
               <div class="form-check">
                 <input
@@ -35,9 +35,9 @@
       </ul>
 
       <h2>Done</h2>
-      <ul class="list-unstyled mb-4">
+      <ul class="list-unstyled mb-4" id="done-items">
         {% for item in view_model.done_items %}
-          <li>
+          <li class="done-item">
             <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
               <div class="form-check">
                 <input
