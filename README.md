@@ -55,19 +55,30 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 ## Tests
 
-The unit and integration tests are written using pytest and are kept in the test folder. You can run them all with the command
+The unit and integration tests are written using pytest and are kept in the `tests` folder. You can run them all with the command
 ```bash
-$ poetry run pytest
+$ poetry run pytest tests
 ```
 
-The unit tests are kept in the unit_tests subfolder. You can run only unit tests using the command
+The unit tests are kept in the `unit_tests` subfolder. You can run only unit tests using the command
 ```bash
-$ poetry run pytest test/unit_tests
+$ poetry run pytest tests/unit_tests
 ```
 
-The integration tests are kept in the integration_tests subfolder.
+The integration tests are kept in the `integration_tests` subfolder.
 They use the env.test environment.
 You can run only integration tests using the command
 ```bash
-$ poetry run pytest test/integration_tests
+$ poetry run pytest tests/integration_tests
+```
+
+## End to End Tests
+
+The end to end tests are in a separate folder called `tests_e2e`.
+
+To run these tests, you need to be able to create a board on trello automatically, for which you may need an organisation id. Add this to the `.env` file.
+
+You can run the end to end tests using the command
+```bash
+$ poetry run pytest tests_e2e
 ```
