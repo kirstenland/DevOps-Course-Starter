@@ -53,9 +53,21 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
-## Unit tests
+## Tests
 
-The unit tests are written using pytest and are kept in the test folder. You can run them all with the command
+The unit and integration tests are written using pytest and are kept in the test folder. You can run them all with the command
 ```bash
 $ poetry run pytest
+```
+
+The unit tests are kept in the unit_tests subfolder. You can run only unit tests using the command
+```bash
+$ poetry run pytest test/unit_tests
+```
+
+The integration tests are kept in the integration_tests subfolder.
+They use the env.test environment.
+You can run only integration tests using the command
+```bash
+$ poetry run pytest test/integration_tests
 ```
