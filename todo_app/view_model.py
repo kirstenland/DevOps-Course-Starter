@@ -1,3 +1,6 @@
+from datetime import datetime, date
+
+
 class ViewModel:
     def __init__(self, items):
         self._items = items
@@ -21,3 +24,8 @@ class ViewModel:
     @property
     def should_show_all_done_items(self):
         return len(self.done_items) < 5
+
+    @property
+    def recent_done_items(self):
+        return [item for item in self.done_items if item.last_modified.date() == date.today()]
+
