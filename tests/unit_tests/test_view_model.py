@@ -86,19 +86,44 @@ def test_recent_done_items_includes_items_last_modified_today():
 
 
 def test_recent_done_items_excludes_items_last_modified_yesterday():
-    recent_item = done_item(1, datetime.now() - timedelta(days=1))
-    items = [recent_item]
+    yesterday_item = done_item(1, datetime.now() - timedelta(days=1))
+    items = [yesterday_item]
     view_model = ViewModel(items)
-    assert not recent_item in view_model.recent_done_items
+    assert not yesterday_item in view_model.recent_done_items
+
 
 def test_recent_done_items_excludes_items_last_modified_late_yesterday():
     now = datetime.now()
     hours_since_10_pm_yesterday = 2 + now.hour
     late_yesterday = now - timedelta(days=1, hours=hours_since_10_pm_yesterday)
-    recent_item = done_item(1, datetime.now() - timedelta(days=1))
+    late_yesterday_item = done_item(1, late_yesterday)
+    items = [late_yesterday_item]
+    view_model = ViewModel(items)
+    assert not late_yesterday_item in view_model.recent_done_items
+
+
+def test_older_done_items_excludes_items_last_modified_today():
+    recent_item = done_item(1, datetime.now())
     items = [recent_item]
     view_model = ViewModel(items)
-    assert not recent_item in view_model.recent_done_items
+    assert not recent_item in view_model.older_done_items
+
+
+def test_recent_done_items_excludes_items_last_modified_yesterday():
+    yesterday_item = done_item(1, datetime.now() - timedelta(days=1))
+    items = [yesterday_item]
+    view_model = ViewModel(items)
+    assert yesterday_item in view_model.older_done_items
+
+
+def test_recent_done_items_excludes_items_last_modified_late_yesterday():
+    now = datetime.now()
+    hours_since_10_pm_yesterday = 2 + now.hour
+    late_yesterday = now - timedelta(days=1, hours=hours_since_10_pm_yesterday)
+    late_yesterday_item = done_item(1, late_yesterday)
+    items = [late_yesterday_item]
+    view_model = ViewModel(items)
+    assert late_yesterday_item in view_model.older_done_items
 
 
 def done_item(index, last_modified = None):

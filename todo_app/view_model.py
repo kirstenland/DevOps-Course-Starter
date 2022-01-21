@@ -29,3 +29,6 @@ class ViewModel:
     def recent_done_items(self):
         return [item for item in self.done_items if item.last_modified.date() == date.today()]
 
+    @property
+    def older_done_items(self):
+        return [item for item in self.done_items if item.last_modified.date() != date.today()]
