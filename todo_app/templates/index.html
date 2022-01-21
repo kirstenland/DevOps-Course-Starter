@@ -33,10 +33,9 @@
           </li>
         {% endfor %}
       </ul>
-
       <h2>Done</h2>
       <ul class="list-unstyled mb-4" id="done-items">
-        {% for item in view_model.done_items %}
+        {% for item in view_model.done_items_always_shown %}
           <li class="done-item">
             <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
               <div class="form-check">
@@ -53,7 +52,31 @@
           </li>
         {% endfor %}
       </ul>
-
+      {% if not view_model.should_show_all_done_items %}
+        <details>
+          <summary>
+            Show items completed earlier
+          </summary>
+          <ul class="list-unstyled mb-4" id="older-done-items">
+            {% for item in view_model.older_done_items %}
+              <li class="done-item">
+                <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      id="check-item-{{ item.id }}"
+                      type="checkbox"
+                      onChange="this.form.submit()"
+                      checked
+                    />
+                    <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+                  </div>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
