@@ -54,3 +54,33 @@ def test_doing_items_returns_empty_list_if_all_items_are_to_do_or_doing():
     view_model = ViewModel(items)
     assert view_model.done_items == []
 
+
+def test_should_show_all_done_items_if_there_are_less_than_five_done_items():
+    items = [done_item(i) for i in range(3)]
+    view_model = ViewModel(items)
+    assert view_model.should_show_all_done_items
+
+
+def test_should_not_show_all_done_items_if_there_are_five_done_items():
+    items = [done_item(i) for i in range(5)]
+    view_model = ViewModel(items)
+    assert not view_model.should_show_all_done_items
+
+
+def test_should_not_show_all_done_items_if_there_are_more_than_five_done_items():
+    items = [done_item(i) for i in range(10)]
+    view_model = ViewModel(items)
+    assert not view_model.should_show_all_done_items
+
+def test_does_not_count_todo_items_towards_the_five_done_items_limit():
+    items = [done_item(i) for i in range(4)] + [to_do_item(i + 4) for i in range(10)]
+    view_model = ViewModel(items)
+    assert view_model.should_show_all_done_items
+
+
+def done_item(index):
+    return Item(index, 'Test Item', 'Done')
+
+
+def to_do_item(index):
+    return Item(index, 'Test Item', 'Doing')
