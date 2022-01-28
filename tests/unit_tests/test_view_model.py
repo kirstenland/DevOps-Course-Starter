@@ -4,6 +4,17 @@ import pytest
 from todo_app.data.item import Item
 from todo_app.view_model import ViewModel
 
+
+def done_item(index, last_modified = None):
+    last_modified = last_modified or datetime.now()
+    return Item(index, 'Test Item', 'Done', last_modified)
+
+
+def to_do_item(index, last_modified = None):
+    last_modified = last_modified or datetime.now()
+    return Item(index, 'Test Item', 'To Do', last_modified)
+
+
 def test_items_are_stored_in_view_model():
     items = [done_item(1), to_do_item(2)]
     view_model = ViewModel(items)
@@ -92,14 +103,14 @@ def test_older_done_items_excludes_items_last_modified_today():
     assert not recent_item in view_model.older_done_items
 
 
-def test_recent_done_items_excludes_items_last_modified_yesterday():
+def test_older_done_items_includes_items_last_modified_yesterday():
     yesterday_item = done_item(1, datetime.now() - timedelta(days=1))
     items = [yesterday_item]
     view_model = ViewModel(items)
     assert yesterday_item in view_model.older_done_items
 
 
-def test_recent_done_items_excludes_items_last_modified_late_yesterday():
+def test_older_done_items_includes_items_last_modified_late_yesterday():
     now = datetime.now()
     hours_since_10_pm_yesterday = 2 + now.hour
     late_yesterday = now - timedelta(days=1, hours=hours_since_10_pm_yesterday)
@@ -108,12 +119,3 @@ def test_recent_done_items_excludes_items_last_modified_late_yesterday():
     view_model = ViewModel(items)
     assert late_yesterday_item in view_model.older_done_items
 
-
-def done_item(index, last_modified = None):
-    last_modified = last_modified or datetime.now()
-    return Item(index, 'Test Item', 'Done', last_modified)
-
-
-def to_do_item(index, last_modified = None):
-    last_modified = last_modified or datetime.now()
-    return Item(index, 'Test Item', 'To Do', last_modified)
