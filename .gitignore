@@ -106,8 +106,11 @@ dmypy.json
 
 # End of https://www.gitignore.io/api/flask
 
-## Intellij ###
+### Intellij ###
 .idea/
+
+### VS Code ###
+.vscode/
 
 ### macOS ###
 .DS_Store
@@ -118,3 +121,6 @@ env/
 
 ### Configuration files ###
 .env
+
+### Log files ###
+*.log

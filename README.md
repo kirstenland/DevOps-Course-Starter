@@ -52,3 +52,37 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Tests
+
+The unit and integration tests are written using pytest and are kept in the `tests` folder. You can run them all with the command
+```bash
+$ poetry run pytest tests
+```
+
+The unit tests are kept in the `unit_tests` subfolder. You can run only unit tests using the command
+```bash
+$ poetry run pytest tests/unit_tests
+```
+
+The integration tests are kept in the `integration_tests` subfolder.
+They use the env.test environment.
+You can run only integration tests using the command
+```bash
+$ poetry run pytest tests/integration_tests
+```
+
+## End to End Tests
+
+The end to end tests are in a separate folder called `tests_e2e`.
+
+To run the end to end tests, you will need to download the [Firefox browser](https://www.mozilla.org/en-GB/firefox/windows/) and the [geckodriver](https://github.com/mozilla/geckodriver/releases) executable. Add the geckodriver executable's location to your path environment variable.
+
+To run these tests, you need to be able to create a board on trello automatically, for which you need your organization id from trello. The end to end tests use your `.env` file, so add it there.
+
+You can get your organization id from making a request to trello, such as a `GET /boards/` request, or from watching requests made by your browser when on the trello website using developer tools.
+
+You can run the end to end tests using the command
+```bash
+$ poetry run pytest tests_e2e
+```
