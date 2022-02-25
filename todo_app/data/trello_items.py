@@ -14,6 +14,9 @@ class TrelloItems():
             "key": self._config.TRELLO_API_KEY,
             "token": self._config.TRELLO_API_TOKEN
         }
+    
+    def with_auth_params(self, params):
+        return { **self.get_auth_params(), **params }
 
     def get_items(self):
         """
@@ -23,7 +26,7 @@ class TrelloItems():
             list: The list of saved items.
         """
         get_lists_url = self.TRELLO_BASE_URL + "/boards/" + self._config.TRELLO_BOARD_ID + "/lists"
-        full_params = self.get_auth_params() | { 'cards': 'open' }
+        full_params = self.with_auth_params({ 'cards': 'open' })
         results = requests.get(get_lists_url, params=full_params).json()
         mapped_items = [Item.from_trello_card(card, trello_list) for trello_list in results for card in trello_list['cards']]
         return mapped_items
