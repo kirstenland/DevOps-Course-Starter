@@ -38,7 +38,7 @@
     ansible.builtin.git:
       repo: https://github.com/kirstenland/DevOps-Course-Starter.git
       dest: /opt/todoapp
-      version: main
+      version: exercise-4
   - name: Install project dependencies with poetry
     ansible.builtin.command:
       chdir: /opt/todoapp
