@@ -5,10 +5,10 @@
   vars_prompt:
     - name: trello_api_key
       prompt: Trello API key
-      private: no
+      private: yes
     - name: trello_api_token
       prompt: Trello API token
-      private: no
+      private: yes
     - name: trello_board_id
       prompt: Board ID
       private: no

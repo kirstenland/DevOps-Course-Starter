@@ -86,3 +86,7 @@ You can run the end to end tests using the command
 ```bash
 $ poetry run pytest tests_e2e
 ```
+
+## Ansible
+
+This app can be managed across virtual machines using ansible. For more instructions, see the README in the ansible folder.
