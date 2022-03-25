@@ -4,11 +4,8 @@ from todo_app.data.trello_config import TrelloConfig
 from todo_app.view_model import ViewModel
 from todo_app.data.trello_items import TrelloItems
 
-print ("hellllloooooo???")
-
 def create_app():
     app = Flask(__name__)
-    print("Hello it is time for me to say hi!")
     trello_items = TrelloItems(TrelloConfig())
 
     @app.route('/')
