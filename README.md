@@ -90,3 +90,12 @@ $ poetry run pytest tests_e2e
 ## Ansible
 
 This app can be managed across virtual machines using ansible. For more instructions, see the README in the ansible folder.
+
+## Docker
+
+You can build and run the app with docker:
+
+```
+docker build --tag todo-app .
+docker run -p 8080:5000 --env-file .env todo-app
+```
