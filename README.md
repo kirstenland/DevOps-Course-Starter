@@ -106,13 +106,17 @@ $ docker run -p 8080:5000 --env-file .env todo-app:dev
 
 ### Development
 
-You can build and run the app with docker in development mode. This is an alternative to the instructions at the top of the README. You will still need to copy .env.template and set up the .env file (see above for instructions), but all other steps will be handled by the docker file. For this you will need [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
+You can build and run the app with docker compose in development mode. This is an alternative to the instructions to run locally. You will need [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed for this.
+
+You will still need to copy .env.template and set up the .env file (see above for instructions), but all other dependencies will be handled automatically. 
 
 ```
-$ docker build --target development --tag todo-app:dev .
-$ docker run --env-file .env -p 8080:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
+$ docker compose up
 ```
 
 The app should then be available at localhost:8080. To stop the service you can use the command line or the Docker Desktop interface.
 
-The app should automatically update when you make changes to the code. However, when new dependencies are installed you will need to rebuild the image and start a new container running the new image.
+The app should automatically update when you make changes to the code. However, when new dependencies are added to the pyproject.toml you will need to rebuild the image, using
+```
+$ docker-compose up --build
+```
