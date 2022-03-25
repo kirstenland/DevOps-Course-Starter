@@ -93,9 +93,26 @@ This app can be managed across virtual machines using ansible. For more instruct
 
 ## Docker
 
-You can build and run the app with docker:
+This app is set up to run in docker, either in production mode or development mode.
+
+### Production
+
+You can build and run the app with docker in production mode.
+
+```bash
+$ docker build --target production --tag todo-app:prod .
+$ docker run -p 8080:5000 --env-file .env todo-app:dev
+```
+
+### Development
+
+You can build and run the app with docker in development mode. This is an alternative to the instructions at the top of the README. You will still need to copy .env.template and set up the .env file (see above for instructions), but all other steps will be handled by the docker file. For this you will need [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
 
 ```
-docker build --tag todo-app .
-docker run -p 8080:5000 --env-file .env todo-app
+$ docker build --target development --tag todo-app:dev .
+$ docker run --env-file .env -p 8080:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
 ```
+
+The app should then be available at localhost:8080. To stop the service you can use the command line or the Docker Desktop interface.
+
+The app should automatically update when you make changes to the code. However, when new dependencies are installed you will need to rebuild the image and start a new container running the new image.
