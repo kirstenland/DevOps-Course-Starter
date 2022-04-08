@@ -10,7 +10,7 @@ RUN poetry install
 
 
 FROM base as production
-COPY ./todo_app app/todo_app
+COPY ./todo_app /app/todo_app
 EXPOSE 5000
 ENTRYPOINT ["poetry", "run", "gunicorn", "todo_app.app:create_app()", "-b", "0.0.0.0:5000"]
 
