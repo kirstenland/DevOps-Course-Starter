@@ -1,0 +1,14 @@
+services:
+  todoapp:
+    build:
+      context: .
+      target: development
+    image: todoapp:dev
+    ports:
+      - "8080:5000"
+    volumes:
+      - type: bind
+        source: ./todo_app
+        target: /app/todo_app
+    env_file:
+      - .env

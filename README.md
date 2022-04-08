@@ -90,3 +90,33 @@ $ poetry run pytest tests_e2e
 ## Ansible
 
 This app can be managed across virtual machines using ansible. For more instructions, see the README in the ansible folder.
+
+## Docker
+
+This app is set up to run in docker, either in production mode or development mode.
+
+### Production
+
+You can build and run the app with docker in production mode.
+
+```bash
+$ docker build --target production --tag todo-app:prod .
+$ docker run -p 8080:5000 --env-file .env todo-app:prod
+```
+
+### Development
+
+You can build and run the app with docker compose in development mode. This is an alternative to the instructions to run locally. You will need [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed for this.
+
+You will still need to copy .env.template and set up the .env file (see above for instructions), but all other dependencies will be handled automatically. 
+
+```
+$ docker compose up
+```
+
+The app should then be available at localhost:8080. To stop the service you can use the command line or the Docker Desktop interface.
+
+The app should automatically update when you make changes to the code. However, when new dependencies are added to the pyproject.toml you will need to rebuild the image, using
+```
+$ docker-compose up --build
+```
