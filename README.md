@@ -101,7 +101,7 @@ You can build and run the app with docker in production mode.
 
 ```bash
 $ docker build --target production --tag todo-app:prod .
-$ docker run -p 8080:5000 --env-file .env todo-app:dev
+$ docker run -p 8080:5000 --env-file .env todo-app:prod
 ```
 
 ### Development
