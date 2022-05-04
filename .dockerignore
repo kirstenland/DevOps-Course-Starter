@@ -6,6 +6,5 @@
 ansible
 .env
 .env.template
-.env.test
 .gitignore
 geckodriver.log

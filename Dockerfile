@@ -19,3 +19,9 @@ FROM base as development
 VOLUME [ "/app/todo_app" ] 
 EXPOSE 5000
 ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0", "-p", "5000"]
+
+FROM base as test
+COPY ./todo_app /app/todo_app
+COPY ./tests /app/tests
+COPY ".env.test" /app/.env.test
+ENTRYPOINT ["poetry", "run", "pytest"]
