@@ -82,6 +82,12 @@ To run these tests, you need to be able to create a board on trello automaticall
 
 You can get your organization id from making a request to trello, such as a `GET /boards/` request, or from watching requests made by your browser when on the trello website using developer tools.
 
+They run in headless mode by default - if you need to be able to see the Firefox window they are controlling, set
+```
+opts.headless = False
+```
+in the driver fixture of `test_todo_app.py`. When running in docker (see below), headless mode must be used.
+
 You can run the end to end tests using the command
 ```bash
 $ poetry run pytest tests_e2e
@@ -119,4 +125,14 @@ The app should then be available at localhost:8080. To stop the service you can 
 The app should automatically update when you make changes to the code. However, when new dependencies are added to the pyproject.toml you will need to rebuild the image, using
 ```
 $ docker-compose up --build
+```
+
+### Test
+
+You can run all the tests using docker.
+This is used by Github Actions to run the tests against each push and each pull request.
+
+```bash
+$ docker build --target test --tag todo-app:test .
+$ docker run --env-file .env todo-app:test
 ```
