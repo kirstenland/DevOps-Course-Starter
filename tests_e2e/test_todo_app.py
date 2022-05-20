@@ -1,23 +1,24 @@
 import os
-from turtle import done
+from time import sleep
 from dotenv import load_dotenv, find_dotenv
 from threading import Thread
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.firefox.options import Options
 from tests_e2e.trello_board_helpers import create_trello_board, delete_trello_board
 from todo_app import app
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def driver():
-    with webdriver.Firefox() as driver:
-        # Wait up to 2 seconds when looking for an element
+    opts = Options()
+    opts.headless = True
+    with webdriver.Firefox(options=opts) as driver:
+         # Wait up to 2 seconds when looking for an element
         driver.implicitly_wait(2)
 
         yield driver
-
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
@@ -33,6 +34,10 @@ def app_with_temp_board():
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True
     thread.start()
+
+    # Wait for application to load
+    sleep(1)
+
     yield application
     # Tear Down
     thread.join(1)
