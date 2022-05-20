@@ -12,3 +12,5 @@ jobs:
         run: docker run todo-app-test tests/unit_tests
       - name: Integration tests
         run: docker run todo-app-test tests/integration_tests
+      - name: End to end tests 
+        run:  docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e TRELLO_ORGANIZATION_ID=${{ secrets.TRELLO_ORGANIZATION_ID }} todo-app-test tests_e2e
