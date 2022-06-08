@@ -132,6 +132,8 @@ $ docker-compose up --build
 You can run all the tests using docker.
 This is used by Github Actions to run the tests against each push and each pull request.
 
+The tests should not use your live boards but you can create a new .env file without a dummy board id and use that instead. The end-to-end tests do require a trello api key and token, and your organization id.
+
 ```bash
 $ docker build --target test --tag todo-app:test .
 $ docker run --env-file .env todo-app:test
