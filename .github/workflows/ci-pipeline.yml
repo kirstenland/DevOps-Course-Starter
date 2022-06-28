@@ -28,5 +28,17 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_KEY }}
       - name: Build docker image
         run: docker build --target production --tag kirstyland/todo-app:$GITHUB_SHA .
-      - name: Push docker image
-        run: docker push kirstyland/todo-app:$GITHUB_SHA  
+      - name: Push docker image to docker
+        run: docker push kirstyland/todo-app:$GITHUB_SHA
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login 
+      - name: Tag docker image for Heroku
+        run: docker tag kirstyland/todo-app:$GITHUB_SHA registry.heroku.com/kirsty-land-todo-app/web
+      - name: Push to Heroku container registry
+        run: docker push registry.heroku.com/kirsty-land-todo-app/web
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a kirsty-land-todo-app web 
