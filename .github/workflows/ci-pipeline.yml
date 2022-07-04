@@ -17,7 +17,7 @@ jobs:
   deploy:
     name: Publish and deploy
     needs: build
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/exercise-9')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,9 @@ jobs:
         run: docker tag kirstyland/todo-app:$GITHUB_SHA registry.heroku.com/kirsty-land-todo-app/web
       - name: Push to Heroku container registry
         run: docker push registry.heroku.com/kirsty-land-todo-app/web
-      - name: Release
+      - name: Release on Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:release -a kirsty-land-todo-app web 
+      - name: Restart Azure app
+        run: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK_URL }}
