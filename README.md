@@ -139,15 +139,9 @@ $ docker build --target test --tag todo-app:test .
 $ docker run --env-file .env todo-app:test
 ```
 
-## Heroku
-
-Github actions deploys to Heroku whenever you push to the main branch.
-
-The todo app can be viewed at: [https://kirsty-land-todo-app.herokuapp.com/](https://kirsty-land-todo-app.herokuapp.com/)
-
 ## Azure
 
-The app is also deployed to Azure from the Docker Hub container registry.
+The app is deployed to Azure from the Docker Hub container registry.
 Github actions pushes to the Docker Hub container registry and restarts the Azure app through a webhook whenever you push to the main branch.
 
 The todo app can be viewed at: [http://kirsty-land-devops-todoapp.azurewebsites.net/](http://kirsty-land-devops-todoapp.azurewebsites.net/)
