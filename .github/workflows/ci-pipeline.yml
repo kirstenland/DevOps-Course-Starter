@@ -27,9 +27,7 @@ jobs:
           username: kirstyland
           password: ${{ secrets.DOCKER_HUB_KEY }}
       - name: Build docker image
-        run: docker build --target production --tag kirstyland/todo-app:latest .
-      - name: Tag docker image
-        run: docker tag kirstyland/todo-app:latest kirstyland/todo-app:$GITHUB_SHA
+        run: docker build --target production --tag kirstyland/todo-app:latest --tag kirstyland/todo-app:$GITHUB_SHA .
       - name: Push docker image to docker
         run: docker push --all-tags kirstyland/todo-app
       - name: Login to Heroku Container registry
