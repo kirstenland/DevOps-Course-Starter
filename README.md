@@ -144,4 +144,4 @@ $ docker run --env-file .env todo-app:test
 The app is deployed to Azure from the Docker Hub container registry.
 Github actions pushes to the Docker Hub container registry and restarts the Azure app through a webhook whenever you push to the main branch.
 
-The todo app can be viewed at: [http://kirsty-land-devops-todoapp.azurewebsites.net/](http://kirsty-land-devops-todoapp.azurewebsites.net/)
+The todo app can be viewed at: [https://kirsty-land-devops-todoapp.azurewebsites.net/](https://kirsty-land-devops-todoapp.azurewebsites.net/)
