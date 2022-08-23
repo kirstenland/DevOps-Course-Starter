@@ -17,7 +17,7 @@ jobs:
   deploy:
     name: Publish and deploy
     needs: build
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/exercise-10')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
