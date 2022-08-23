@@ -1,13 +1,14 @@
 import os
 from time import sleep
+import uuid
 from dotenv import load_dotenv, find_dotenv
 from threading import Thread
+import pymongo
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from tests_e2e.trello_board_helpers import create_trello_board, delete_trello_board
 from todo_app import app
 
 @pytest.fixture(scope='module')
@@ -15,19 +16,20 @@ def driver():
     opts = Options()
     opts.headless = True
     with webdriver.Firefox(options=opts) as driver:
-         # Wait up to 2 seconds when looking for an element
-        driver.implicitly_wait(2)
+         # Wait up to 5 seconds when looking for an element
+        driver.implicitly_wait(5)
 
         yield driver
 
 @pytest.fixture(scope='module')
-def app_with_temp_board():
+def app_with_temp_db():
     file_path = find_dotenv('.env')
     load_dotenv(file_path, override=True)
 
-    # Create the new board & update the board id environment variable
-    board_id = create_trello_board()
-    os.environ['TRELLO_BOARD_ID'] = board_id
+    # Update the database name to use a random test database so concurrent tests do not interfere
+    os.environ['MONGO_DATABASE_NAME'] = 'test_database_'+str(uuid.uuid1())
+    client = pymongo.MongoClient(os.environ['MONGO_CONNECTION_STRING'])
+
     # construct the new application
     application = app.create_app()
     # start the app in its own thread.
@@ -39,11 +41,12 @@ def app_with_temp_board():
     sleep(1)
 
     yield application
+
     # Tear Down
     thread.join(1)
-    delete_trello_board(board_id)
+    client.drop_database(os.environ['MONGO_DATABASE_NAME'])
 
-def test_task_journey(driver, app_with_temp_board):
+def test_task_journey(driver, app_with_temp_db):
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
 

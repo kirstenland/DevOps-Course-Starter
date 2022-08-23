@@ -1,41 +1,35 @@
+from datetime import datetime
 import pytest
+import mongomock
+import pymongo
 from dotenv import load_dotenv, find_dotenv
-import os
-import requests
 
 from todo_app import app
-
+from todo_app.data.mongo_config import MongoConfig
 
 @pytest.fixture
 def client():
     file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
-    test_app = app.create_app()
-    with test_app.test_client() as client:
-        yield client
 
+    with mongomock.patch(servers=(('fakemongo.com', 27017),)):
+        test_app = app.create_app()
+        with test_app.test_client() as client:
+            yield client
 
-class StubResponse():
-    def __init__(self, fake_response_data):
-        self.fake_response_data = fake_response_data
-    
-    def json(self):
-        return self.fake_response_data
+def get_db():
+    mongo_config = MongoConfig()
+    return pymongo.MongoClient(mongo_config.MONGO_CONNECTION_STRING)[mongo_config.MONGO_DATABASE_NAME]
 
-def get_lists_stub(url, params):
-    test_board_id = os.environ.get('TRELLO_BOARD_ID')
-    fake_response_data = None
-    if url == f'https://api.trello.com/1/boards/{test_board_id}/lists':
-        fake_response_data = [{
-            'id': '123abc',
-            'name': 'To Do',
-            'cards': [{'id': '456', 'name': 'Test card', 'dateLastActivity': '2021-12-01T16:20:55.352Z'}]
-        }]
-    return StubResponse(fake_response_data)
+def when_db_contains_test_card():
+    get_db().todos.insert_one({
+        'title': 'Test card',
+        'last_modified': datetime.utcnow(),
+        'status': 'To Do'
+    })
 
-
-def test_index_page(monkeypatch, client):
-    monkeypatch.setattr(requests, 'get', get_lists_stub)
+def test_index_page(client):
+    when_db_contains_test_card()
     response = client.get('/')
     assert response.status_code == 200
     assert 'Test card' in response.data.decode() 
