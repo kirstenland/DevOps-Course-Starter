@@ -10,12 +10,6 @@ class MongoItems():
     def __init__(self, config):
         self._config = config
 
-    def get_auth_params(self):
-        return {
-            "key": self._config.TRELLO_API_KEY,
-            "token": self._config.TRELLO_API_TOKEN
-        }
-    
     def with_auth_params(self, params):
         return { **self.get_auth_params(), **params }
 

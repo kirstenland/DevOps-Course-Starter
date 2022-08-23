@@ -16,4 +16,4 @@ You are now ready to run the playbook
 ansible-playbook playbook.yml -i inventory.ini
 ```
 
-The playbook will prompt you for your trello api key, trello api id and trello board id. You can obtain these as described in the README. It should then run through the setup stages and the todoapp should be accessible on the host IP addresses.
+The playbook will prompt you for your mongo connection string and database name. You can obtain these as described in the README. It should then run through the setup stages and the todoapp should be accessible on the host IP addresses.
