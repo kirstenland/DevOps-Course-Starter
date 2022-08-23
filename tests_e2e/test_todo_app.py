@@ -16,8 +16,8 @@ def driver():
     opts = Options()
     opts.headless = True
     with webdriver.Firefox(options=opts) as driver:
-         # Wait up to 5 seconds when looking for an element
-        driver.implicitly_wait(5)
+         # Wait up to 10 seconds when looking for an element
+        driver.implicitly_wait(10)
 
         yield driver
 
