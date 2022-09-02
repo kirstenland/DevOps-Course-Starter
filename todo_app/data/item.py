@@ -1,5 +1,3 @@
-from datetime import datetime
-
 class Item:
     def __init__(self, id, title, status, last_modified):
         self.id = id

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import pytest
 
 from todo_app.data.item import Item
 from todo_app.view_model import ViewModel
