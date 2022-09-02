@@ -29,6 +29,7 @@ def app_with_temp_db():
     # Update the database name to use a random test database so concurrent tests do not interfere
     database_name = 'test_database_'+str(uuid.uuid1())[:5]
     os.environ['MONGO_DATABASE_NAME'] = database_name
+    os.environ['LOGIN_DISABLED'] = 'True'
     client = pymongo.MongoClient(os.environ['MONGO_CONNECTION_STRING'])
 
     # construct the new application
