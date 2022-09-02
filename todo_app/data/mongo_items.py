@@ -10,9 +10,6 @@ class MongoItems():
     def __init__(self, config):
         self._config = config
 
-    def with_auth_params(self, params):
-        return { **self.get_auth_params(), **params }
-
     def get_items(self):
         """
         Fetches all saved items from the mongo collection.
