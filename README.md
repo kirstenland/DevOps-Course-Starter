@@ -32,7 +32,7 @@ $ cp .env.template .env  # (first time only)
 
 The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change).
 
-To run the app, you will need a Trello board, api key and api token. First [create a Trello account](https://trello.com/signup) and then generate an api key and token following the instructions [here](https://trello.com/app-key). Add these to the `.env` file. Using the [Trello website](https://trello.com/), create a new board and add the board id (which should be in the url when looking at the board on Trello) to the `.env` file.
+To run the app, you will need an Azure where you should set up a CosmosDB cluster. Once you've set this up, you can get your connection string from "PRIMARY CONNECTION STRING" for your CosmosDB cluster, available under Settings → Connection String. Add this to the `.env` file.
 
 ## Running the App
 
@@ -78,9 +78,7 @@ The end to end tests are in a separate folder called `tests_e2e`.
 
 To run the end to end tests, you will need to download the [Firefox browser](https://www.mozilla.org/en-GB/firefox/windows/) and the [geckodriver](https://github.com/mozilla/geckodriver/releases) executable. Add the geckodriver executable's location to your path environment variable.
 
-To run these tests, you need to be able to create a board on trello automatically, for which you need your organization id from trello. The end to end tests use your `.env` file, so add it there.
-
-You can get your organization id from making a request to trello, such as a `GET /boards/` request, or from watching requests made by your browser when on the trello website using developer tools.
+To run these tests, you need your connection string to connect to your Cosmos cluster. The tests should use a different database from the one you use in dev, but can use the same Cosmos cluster.
 
 They run in headless mode by default - if you need to be able to see the Firefox window they are controlling, set
 ```
@@ -132,7 +130,7 @@ $ docker-compose up --build
 You can run all the tests using docker.
 This is used by Github Actions to run the tests against each push and each pull request.
 
-The tests should not use your live boards but you can create a new .env file without a dummy board id and use that instead. The end-to-end tests do require a trello api key and token, and your organization id.
+The tests should not use your live boards but you can create a new .env file without a dummy board id and use that instead. The end-to-end tests do require your mongo connection string.
 
 ```bash
 $ docker build --target test --tag todo-app:test .

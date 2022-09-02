@@ -8,6 +8,5 @@ class Item:
         self.last_modified = last_modified
 
     @classmethod
-    def from_trello_card(cls, card, trello_list):
-        return cls(card['id'], card['name'], trello_list['name'], datetime.strptime(card['dateLastActivity'], "%Y-%m-%dT%H:%M:%S.%fZ"))
-
+    def from_mongo_item(cls, item):
+        return cls(str(item['_id']), item['title'], item['status'], item['last_modified'])

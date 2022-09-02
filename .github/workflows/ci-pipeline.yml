@@ -13,7 +13,7 @@ jobs:
       - name: Integration tests
         run: docker run todo-app-test tests/integration_tests
       - name: End to end tests 
-        run:  docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e TRELLO_ORGANIZATION_ID=${{ secrets.TRELLO_ORGANIZATION_ID }} todo-app-test tests_e2e
+        run:  docker run -e MONGO_CONNECTION_STRING="${{ secrets.MONGO_CONNECTION_STRING }}" todo-app-test tests_e2e
   deploy:
     name: Publish and deploy
     needs: build
