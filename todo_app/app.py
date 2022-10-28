@@ -39,7 +39,8 @@ def create_app():
             'https://api.github.com/user',
             headers={'Authorization': 'Bearer ' + token}
         ).json()
-        user = User(user_response['id'])
+        id = user_response['id']
+        user = User(id, oauth_manager.get_role(id))
         login_user(user)
         return redirect('/')
 
