@@ -62,6 +62,8 @@ In the tests, and in dev when not testing authorization, setting the environment
 
 If you need to test the authentication flow, or are deploying to a prod or QA site, you will need to create an OAuth App, following the instructions [here](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps). Adding the client id and the client secret to the environment variables, and setting `LOGIN_DISABLED=False` will then enable authentication.
 
+Add the ids of any user with the "WRITER" role to the config file.
+
 ## Tests
 
 The unit and integration tests are written using pytest and are kept in the `tests` folder. You can run them all with the command
