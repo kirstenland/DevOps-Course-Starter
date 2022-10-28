@@ -1,4 +1,4 @@
-FROM python:3.7-buster as base
+FROM python:3.11-buster as base
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH "$PATH:/root/.local/bin/"
 
