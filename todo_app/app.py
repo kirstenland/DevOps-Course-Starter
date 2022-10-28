@@ -35,12 +35,7 @@ def create_app():
     @app.route('/login/callback')
     def login():
         token = oauth_manager.get_token(request.args.get('code'))
-        user_response = requests.get(
-            'https://api.github.com/user',
-            headers={'Authorization': 'Bearer ' + token}
-        ).json()
-        id = user_response['id']
-        user = User(id, oauth_manager.get_role(id))
+        user = oauth_manager.get_user(token)
         login_user(user)
         return redirect('/')
 

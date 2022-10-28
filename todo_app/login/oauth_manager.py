@@ -35,7 +35,8 @@ class OAuthManager():
             'https://api.github.com/user',
             headers={'Authorization': 'Bearer ' + token}
         ).json()
-        return User(user_response['id'])
+        id = user_response['id']
+        return User(user_response['id'], self.get_role(id))
 
     def get_role(self, user_id):
         if user_id in self._config.WRITER_USER_IDS:
