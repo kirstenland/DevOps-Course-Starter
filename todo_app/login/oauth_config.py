@@ -1,5 +1,6 @@
 import os
 
+
 class OAuthConfig:
     def __init__(self):
         """OAuth configuration variables."""

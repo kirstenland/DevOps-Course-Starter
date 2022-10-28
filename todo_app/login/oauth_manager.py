@@ -3,6 +3,7 @@ import requests
 
 from todo_app.login.user import User
 
+
 class OAuthManager():
     def __init__(self, config):
         self._config = config
@@ -22,16 +23,16 @@ class OAuthManager():
             'client_secret': self._config.OAUTH_CLIENT_SECRET,
             'code': code
         }
-        headers = { 'Accept': 'application/json' }
+        headers = {'Accept': 'application/json'}
         response = requests.post(url,
-            params=params,
-            headers=headers
-        ).json()
+                                 params=params,
+                                 headers=headers
+                                 ).json()
         return response['access_token']
-    
+
     def get_user(self, token):
         user_response = requests.get(
             'https://api.github.com/user',
-            headers = { 'Authorization': 'Bearer ' + token }
+            headers={'Authorization': 'Bearer ' + token}
         ).json()
         return User(user_response['id'])

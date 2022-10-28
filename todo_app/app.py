@@ -14,13 +14,14 @@ from todo_app.login.oauth_manager import OAuthManager
 from todo_app.view_model import ViewModel
 from todo_app.config import Config
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
     mongo_items = MongoItems(MongoConfig())
     login_manager = LoginManager()
     oauth_manager = OAuthManager(OAuthConfig())
-    
+
     @login_manager.unauthorized_handler
     def unauthenticated():
         return redirect(oauth_manager.get_authorize_url())
@@ -33,10 +34,10 @@ def create_app():
 
     @app.route('/login/callback')
     def login():
-        token = oauth_manager.get_token()
+        token = oauth_manager.get_token(request.args.get('code'))
         user_response = requests.get(
             'https://api.github.com/user',
-            headers = { 'Authorization': 'Bearer ' + token }
+            headers={'Authorization': 'Bearer ' + token}
         ).json()
         user = User(user_response['id'])
         login_user(user)
@@ -45,7 +46,8 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
-        items = sorted(mongo_items.get_items(), key=lambda item: item.status == 'Done')
+        items = sorted(mongo_items.get_items(),
+                       key=lambda item: item.status == 'Done')
         item_view_model = ViewModel(items)
         return render_template('index.html', view_model=item_view_model)
 
