@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_login import LoginManager, login_required, login_user
 import requests
-import urllib
+from todo_app.login.authorization import current_user_can_write, writer_required
 
 from todo_app.login.user import User
 
@@ -28,7 +28,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User(user_id)
+        return User(user_id, oauth_manager.get_role(user_id))
 
     login_manager.init_app(app)
 
@@ -48,23 +48,26 @@ def create_app():
     def index():
         items = sorted(mongo_items.get_items(),
                        key=lambda item: item.status == 'Done')
-        item_view_model = ViewModel(items)
+        item_view_model = ViewModel(items, current_user_can_write())
         return render_template('index.html', view_model=item_view_model)
 
     @app.route('/items', methods=['POST'])
     @login_required
+    @writer_required
     def add_item():
         mongo_items.add_item(request.form.get('new_item'))
         return redirect('/')
 
     @app.route('/items/<id>/complete', methods=['POST'])
     @login_required
+    @writer_required
     def complete_item(id):
         mongo_items.update_status(id, 'Done')
         return redirect('/')
 
     @app.route('/items/<id>/uncomplete', methods=['POST'])
     @login_required
+    @writer_required
     def uncomplete_item(id):
         mongo_items.update_status(id, 'To Do')
         return redirect('/')

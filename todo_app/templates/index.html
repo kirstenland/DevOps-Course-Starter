@@ -9,12 +9,14 @@
 
 <div class="row">
   <div class="col-md-12">
+    {% if view_model.can_write %}
     <form method="post" action="/items">
       <input name="new_item" type="text" required />
       <button type="submit">
         Add item
       </button>
     </form>
+    {% endif %}
     <h2>To Do</h2>
     <ul class="list-unstyled mb-4" id="to-do-items">
       {% for item in view_model.to_do_items %}
@@ -22,7 +24,7 @@
         <form method="post" action="{{url_for('complete_item', id=item.id)}}">
           <div class="form-check">
             <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox"
-              onChange="this.form.submit()" />
+              onChange="this.form.submit()" {% if not view_model.can_write %} disabled {% endif %}/>
             <label for="check-item-{{ item.id }}">{{ item.title }}</label>
           </div>
         </form>
@@ -36,7 +38,7 @@
         <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
           <div class="form-check">
             <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox" onChange="this.form.submit()"
-              checked />
+              checked {% if not view_model.can_write %} disabled {% endif %} />
             <label for="check-item-{{ item.id }}">{{ item.title }}</label>
           </div>
         </form>
@@ -54,7 +56,7 @@
           <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
             <div class="form-check">
               <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox"
-                onChange="this.form.submit()" checked />
+                onChange="this.form.submit()" checked {% if not view_model.can_write %} disabled {% endif %} />
               <label for="check-item-{{ item.id }}">{{ item.title }}</label>
             </div>
           </form>

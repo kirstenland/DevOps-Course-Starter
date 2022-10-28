@@ -2,7 +2,7 @@ import urllib
 import requests
 
 from todo_app.login.user import User
-
+from todo_app.login.authorization import WRITER, READER
 
 class OAuthManager():
     def __init__(self, config):
@@ -36,3 +36,8 @@ class OAuthManager():
             headers={'Authorization': 'Bearer ' + token}
         ).json()
         return User(user_response['id'])
+
+    def get_role(self, user_id):
+        if user_id in self._config.WRITER_USER_IDS:
+            return WRITER
+        return READER
