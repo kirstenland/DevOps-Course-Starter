@@ -150,7 +150,12 @@ $ docker run --env-file .env todo-app:test
 
 ## Azure
 
-The app is deployed to Azure from the Docker Hub container registry.
-Github actions pushes to the Docker Hub container registry and restarts the Azure app through a webhook whenever you push to the main branch.
+The app is deployed to Azure from the Docker Hub container registry, with resources set up via terraform.
 
-The todo app can be viewed at: [https://kirsty-land-devops-todoapp.azurewebsites.net/](https://kirsty-land-devops-todoapp.azurewebsites.net/)
+The terraform state is stored in a shared blob storage account on Azure called `krldevopstodoapptfstate`.
+You can manually apply terraform changes by obtaining an `ARM_ACCESS_KEY` for the blob storage and running `terraform init` followed by `terraform apply`.
+
+Terraform changes should be applied automatically on Github Actions whenever a commit is pushed to the main branch.
+Github actions also pushes to the Docker Hub container registry and restarts the Azure app through a webhook.
+
+The todo app can be viewed at: [https://prod-terraformed-todoapp.azurewebsites.net/](https://prod-terraformed-todoapp.azurewebsites.net/)
