@@ -6,21 +6,23 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY poetry.lock  poetry.toml pyproject.toml ./
-RUN poetry install
 
 
 FROM base as production
+RUN poetry install --without dev
 COPY ./todo_app /app/todo_app
 EXPOSE 5000
 CMD poetry run gunicorn "todo_app.app:create_app()" --bind 0.0.0.0:${PORT:-5000}
 
 FROM base as development
+RUN poetry install
 VOLUME [ "/app/todo_app" ]
 EXPOSE 5000
 ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0", "-p", "5000"]
 
 
 FROM base as test
+RUN poetry install
 ENV GECKODRIVER_VER v0.30.0
 ENV SECRET_KEY "secret_key_for_ui_tests"
 
