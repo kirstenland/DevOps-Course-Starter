@@ -1,6 +1,11 @@
 from flask import Flask, render_template, request, redirect, abort
 from flask_login import LoginManager, login_required, login_user
-from helper.current_user_id import get_current_user_id
+
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
+
+from todo_app.helper.current_user_id import get_current_user_id
+
 from todo_app.login.authorization import current_user_can_write, writer_required
 from todo_app.login.error import GithubRequestFailedException
 
@@ -21,6 +26,13 @@ def create_app():
     app.config.from_object(Config())
 
     app.logger.setLevel(app.config['LOG_LEVEL'])
+
+    if app.config['LOGGLY_TOKEN'] is not None:
+        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{app.config["LOGGLY_TOKEN"]}/tag/todo-app')
+        handler.setFormatter(
+            Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+        )
+        app.logger.addHandler(handler)
 
     mongo_items = MongoItems(MongoConfig())
     login_manager = LoginManager()

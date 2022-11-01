@@ -2,7 +2,7 @@ from functools import wraps
 from flask import abort, current_app
 from flask_login import current_user
 
-from helper.current_user_id import get_current_user_id
+from todo_app.helper.current_user_id import get_current_user_id
 
 READER = 'READER'
 WRITER = 'WRITER'
