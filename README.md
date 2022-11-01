@@ -148,6 +148,18 @@ $ docker build --target test --tag todo-app:test .
 $ docker run --env-file .env todo-app:test
 ```
 
+## Logging
+
+The log level can be configured via the `LOG_LEVEL` environment level. Logs can be configured to be sent to [loggly](https://www.loggly.com/).
+
+To do this, you will need to
+ * create a Loggly account
+ * Go to Logs > Source Setup > Customer Tokens on the Loggly website
+ * Add a new Customer Token
+ * Add the token as `LOGGLY_TOKEN` environment variable
+
+Your logs can then be queried through loggly.
+
 ## Azure
 
 The app is deployed to Azure from the Docker Hub container registry, with resources set up via terraform.
