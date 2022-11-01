@@ -16,6 +16,17 @@ variable "oauth_client_secret" {
   sensitive   = true
 }
 
+variable "log_level" {
+  description = "Log level"
+  default     = "ERROR"
+}
+
+variable "loggly_token" {
+  description = "Token for writing logs to loggly"
+  default     = ""
+  sensitive   = true
+}
+
 variable "writer_user_ids" {
   description = "User Ids of users with the role WRITER"
   default     = ""
