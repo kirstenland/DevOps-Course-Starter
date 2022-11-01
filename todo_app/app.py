@@ -19,6 +19,9 @@ from todo_app.config import Config
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
+
+    app.logger.setLevel(app.config['LOG_LEVEL'])
+
     mongo_items = MongoItems(MongoConfig())
     login_manager = LoginManager()
     oauth_manager = OAuthManager(OAuthConfig())
