@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
 from flask_login import LoginManager, login_required, login_user
-import requests
+from helper.current_user_id import get_current_user_id
 from todo_app.login.authorization import current_user_can_write, writer_required
+from todo_app.login.error import GithubRequestFailedException
 
 from todo_app.login.user import User
 
@@ -34,10 +35,25 @@ def create_app():
 
     @app.route('/login/callback')
     def login():
-        token = oauth_manager.get_token(request.args.get('code'))
-        user = oauth_manager.get_user(token)
-        login_user(user)
-        return redirect('/')
+        try:
+            token = oauth_manager.get_token(request.args.get('code'))
+            user = oauth_manager.get_user(token)
+            login_user(user)
+
+            app.logger.info(
+                'User {user_id} successfully logged in'.format(user_id=user.id))
+            return redirect('/')
+        except GithubRequestFailedException as ex:
+            app.logger.error('''Login failed for user: {message}
+            Error: {error}
+            Error description: {error_description}
+            Error URI: {error_uri}'''.format(
+                message=ex.message,
+                error=ex.github_error,
+                error_description=ex.github_error_description,
+                error_uri=ex.github_error_uri
+            ))
+            return abort(403)
 
     @app.route('/')
     @login_required
@@ -51,7 +67,10 @@ def create_app():
     @login_required
     @writer_required
     def add_item():
-        mongo_items.add_item(request.form.get('new_item'))
+        new_item_id = mongo_items.add_item(request.form.get('new_item'))
+        app.logger.info('User {user_id} added an item {item_id}'.format(
+            user_id=get_current_user_id(), item_id=new_item_id
+        ))
         return redirect('/')
 
     @app.route('/items/<id>/complete', methods=['POST'])
@@ -59,6 +78,8 @@ def create_app():
     @writer_required
     def complete_item(id):
         mongo_items.update_status(id, 'Done')
+        app.logger.info('User {user_id} completed item {item_id}'.format(
+            user_id=get_current_user_id(), item_id=id))
         return redirect('/')
 
     @app.route('/items/<id>/uncomplete', methods=['POST'])
@@ -66,6 +87,8 @@ def create_app():
     @writer_required
     def uncomplete_item(id):
         mongo_items.update_status(id, 'To Do')
+        app.logger.info('User {user_id} unchecked item {item_id}'.format(
+            user_id=get_current_user_id(), item_id=id))
         return redirect('/')
 
     return app
