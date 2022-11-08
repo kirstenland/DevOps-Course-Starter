@@ -1,8 +1,10 @@
 import urllib
 import requests
+from todo_app.login.error import GithubRequestFailedException, handle_github_request_errors
 
 from todo_app.login.user import User
 from todo_app.login.authorization import WRITER, READER
+
 
 class OAuthManager():
     def __init__(self, config):
@@ -24,19 +26,22 @@ class OAuthManager():
             'code': code
         }
         headers = {'Accept': 'application/json'}
-        response = requests.post(url,
-                                 params=params,
-                                 headers=headers
-                                 ).json()
+        response = requests.post(url, params=params, headers=headers).json()
+
+        handle_github_request_errors(response, 'get token from code')
+
         return response['access_token']
 
     def get_user(self, token):
-        user_response = requests.get(
+        response = requests.get(
             'https://api.github.com/user',
             headers={'Authorization': 'Bearer ' + token}
         ).json()
-        id = user_response['id']
-        return User(user_response['id'], self.get_role(id))
+
+        handle_github_request_errors(response, 'get user from token')
+
+        id = response['id']
+        return User(id, self.get_role(id))
 
     def get_role(self, user_id):
         if user_id in self._config.WRITER_USER_IDS:

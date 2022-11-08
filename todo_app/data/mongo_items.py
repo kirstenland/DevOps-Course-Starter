@@ -25,6 +25,9 @@ class MongoItems():
 
         Args:
             title: The title of the item.
+        
+        Returns:
+            The id of the inserted item
         """
         status = 'To Do'
         item = {
@@ -33,7 +36,7 @@ class MongoItems():
             'last_modified': datetime.datetime.utcnow(),
         }
 
-        self.get_db().todos.insert_one(item)
+        return self.get_db().todos.insert_one(item).inserted_id
 
     def update_status(self, item_id, new_status):
         """
