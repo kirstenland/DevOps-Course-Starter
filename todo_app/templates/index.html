@@ -2,81 +2,69 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
+<div class="jumbotron">
+  <h1 class="display-4">To-Do App</h1>
+  <p class="lead">Just another to-do app.</p>
+</div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <form method="post" action="/items">
-        <input name="new_item" type="text" required/>
-        <button type="submit">
-            Add item
-        </button>
-      </form>
-      <h2>To Do</h2>
-      <ul class="list-unstyled mb-4" id="to-do-items">
-        {% for item in view_model.to_do_items %}
-          <li class="to-do-item">
-            <form method="post" action="{{url_for('complete_item', id=item.id)}}">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  id="check-item-{{ item.id }}"
-                  type="checkbox"
-                  onChange="this.form.submit()"
-                />
-                <label for="check-item-{{ item.id }}">{{ item.title }}</label>
-              </div>
-            </form>
-          </li>
+<div class="row">
+  <div class="col-md-12">
+    {% if view_model.can_write %}
+    <form method="post" action="/items">
+      <input name="new_item" type="text" required />
+      <button type="submit">
+        Add item
+      </button>
+    </form>
+    {% endif %}
+    <h2>To Do</h2>
+    <ul class="list-unstyled mb-4" id="to-do-items">
+      {% for item in view_model.to_do_items %}
+      <li class="to-do-item">
+        <form method="post" action="{{url_for('complete_item', id=item.id)}}">
+          <div class="form-check">
+            <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox"
+              onChange="this.form.submit()" {% if not view_model.can_write %} disabled {% endif %}/>
+            <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+          </div>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    <h2>Done</h2>
+    <ul class="list-unstyled mb-4" id="done-items">
+      {% for item in view_model.done_items_always_shown %}
+      <li class="done-item">
+        <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
+          <div class="form-check">
+            <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox" onChange="this.form.submit()"
+              checked {% if not view_model.can_write %} disabled {% endif %} />
+            <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+          </div>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% if not view_model.should_show_all_done_items %}
+    <details>
+      <summary>
+        Show items completed earlier
+      </summary>
+      <ul class="list-unstyled mb-4" id="older-done-items">
+        {% for item in view_model.older_done_items %}
+        <li class="done-item">
+          <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
+            <div class="form-check">
+              <input class="form-check-input" id="check-item-{{ item.id }}" type="checkbox"
+                onChange="this.form.submit()" checked {% if not view_model.can_write %} disabled {% endif %} />
+              <label for="check-item-{{ item.id }}">{{ item.title }}</label>
+            </div>
+          </form>
+        </li>
         {% endfor %}
       </ul>
-      <h2>Done</h2>
-      <ul class="list-unstyled mb-4" id="done-items">
-        {% for item in view_model.done_items_always_shown %}
-          <li class="done-item">
-            <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  id="check-item-{{ item.id }}"
-                  type="checkbox"
-                  onChange="this.form.submit()"
-                  checked
-                />
-                <label for="check-item-{{ item.id }}">{{ item.title }}</label>
-              </div>
-            </form>
-          </li>
-        {% endfor %}
-      </ul>
-      {% if not view_model.should_show_all_done_items %}
-        <details>
-          <summary>
-            Show items completed earlier
-          </summary>
-          <ul class="list-unstyled mb-4" id="older-done-items">
-            {% for item in view_model.older_done_items %}
-              <li class="done-item">
-                <form method="post" action="{{url_for('uncomplete_item', id=item.id)}}">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      id="check-item-{{ item.id }}"
-                      type="checkbox"
-                      onChange="this.form.submit()"
-                      checked
-                    />
-                    <label for="check-item-{{ item.id }}">{{ item.title }}</label>
-                  </div>
-                </form>
-              </li>
-            {% endfor %}
-          </ul>
-        </details>
-      {% endif %}
-    </div>
+    </details>
+    {% endif %}
   </div>
+</div>
 {% endblock %}

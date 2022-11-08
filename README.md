@@ -53,6 +53,17 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+### Authentication and Authorization
+
+The todo app uses Github's OAuth to log in users.
+All users can view todos, but only allow users with the "WRITER" role can add todos or complete todos.
+
+In the tests, and in dev when not testing authorization, setting the environment variable `LOGIN_DISABLED=True` will disable authentication and the user will have role WRITER.
+
+If you need to test the authentication flow, or are deploying to a prod or QA site, you will need to create an OAuth App, following the instructions [here](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps). Adding the client id and the client secret to the environment variables, and setting `LOGIN_DISABLED=False` will then enable authentication.
+
+Add the ids of any user with the "WRITER" role to the config file.
+
 ## Tests
 
 The unit and integration tests are written using pytest and are kept in the `tests` folder. You can run them all with the command
