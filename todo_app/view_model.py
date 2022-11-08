@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 
 class ViewModel:
-    def __init__(self, items, can_write):
+    def __init__(self, items, can_write = True):
         self._items = items
         self.can_write = can_write
 
