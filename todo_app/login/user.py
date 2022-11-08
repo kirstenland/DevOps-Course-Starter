@@ -1,4 +1,3 @@
-from tkinter import WRITABLE
 from flask_login import UserMixin
 
 from todo_app.login.authorization import WRITER
