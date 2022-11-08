@@ -10,9 +10,6 @@ class Config:
 
         self.LOGIN_DISABLED = os.environ.get('LOGIN_DISABLED') == 'True'
 
-        default_log_level = ('INFO'
-                             if os.environ.get('FLASK_ENV') == 'development'
-                             else 'ERROR')
-        self.LOG_LEVEL = os.environ.get('LOG_LEVEL') or default_log_level
+        self.LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
 
         self.LOGGLY_TOKEN = os.environ.get('LOGGLY_TOKEN')

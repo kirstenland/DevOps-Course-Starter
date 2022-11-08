@@ -18,7 +18,7 @@ variable "oauth_client_secret" {
 
 variable "log_level" {
   description = "Log level"
-  default     = "ERROR"
+  default     = "INFO"
 }
 
 variable "loggly_token" {

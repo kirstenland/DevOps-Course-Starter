@@ -48,4 +48,4 @@ jobs:
       TF_VAR_oauth_client_secret: ${{ secrets.OAUTH_CLIENT_SECRET }}
       TF_VAR_writer_user_ids: ${{ secrets.WRITER_USER_IDS }}
       TF_VAR_loggly_token: ${{ secrets.LOGGLY_TOKEN }}
-      TF_VAR_log_level: WARN
+      TF_VAR_log_level: INFO
