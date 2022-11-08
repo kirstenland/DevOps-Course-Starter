@@ -30,5 +30,20 @@ jobs:
         run: docker build --target production --tag kirstyland/todo-app:latest --tag kirstyland/todo-app:$GITHUB_SHA .
       - name: Push docker image to docker
         run: docker push --all-tags kirstyland/todo-app
+      - name: Initialize terraform
+        run: terraform init
+      - name: Apply terraform
+        run:  terraform apply -auto-approve
       - name: Restart Azure app
-        run: curl -dH -X POST ${{ secrets.AZURE_WEBHOOK_URL }}
+        run: curl -dH -X POST "$(terraform output -raw webhook_url)"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+      TF_VAR_prefix: prod
+      TF_VAR_secret_key: ${{ secrets.SECRET_KEY }}
+      TF_VAR_oauth_client_id: ${{ secrets.OAUTH_CLIENT_ID }}
+      TF_VAR_oauth_client_secret: ${{ secrets.OAUTH_CLIENT_SECRET }}
+      TF_VAR_writer_user_ids: ${{ secrets.WRITER_USER_IDS }}
