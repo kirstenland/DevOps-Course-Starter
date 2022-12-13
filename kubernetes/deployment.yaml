@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: module-14
+spec:
+  selector:
+    matchLabels:
+      app: module-14
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: module-14
+    spec:
+      containers:
+        - name: todoapp
+          image: todo-app:prod
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 5000
+          env:
+            - name: FLASK_APP
+              value: todo_app/app
+            - name: MONGO_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: todoappsecrets
+                  key: MONGO_CONNECTION_STRING
+                  optional: false
+            - name: MONGO_DATABASE_NAME
+              value: kirsty-todo-data
+            - name: OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: todoappsecrets
+                  key: OAUTH_CLIENT_ID
+                  optional: false
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: todoappsecrets
+                  key: OAUTH_CLIENT_SECRET
+                  optional: false
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: todoappsecrets
+                  key: SECRET_KEY
+                  optional: false
+            - name: WRITER_USER_IDS
+              value: "40798648"
+            - name: LOGGLY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: todoappsecrets
+                  key: LOGGLY_TOKEN
+                  optional: true

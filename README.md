@@ -160,6 +160,44 @@ To do this, you will need to
 
 Your logs can then be queried through loggly.
 
+## Kubernetes
+You can run the app locally using kubernetes and minikube. You will need to install [kubectl](https://kubernetes.io/docs/tasks/tools/) and [minikube](https://minikube.sigs.k8s.io/docs/start/). You will also need docker installed.
+
+Start minikube
+```
+$ minikube start --driver=docker
+```
+
+Create a secret containing the environment variables needed to run the todoapp. Run the following command in Git Bash, replacing the ??? with the values in your `.env` file as found above:
+
+```
+$ kubectl create secret generic todoappsecrets \
+    --from-literal=MONGO_CONNECTION_STRING='???' \
+    --from-literal=OAUTH_CLIENT_ID='???' \
+    --from-literal=OAUTH_CLIENT_SECRET='???' \
+    --from-literal=SECRET_KEY='???' \
+    --from-literal=LOGGLY_TOKEN='???'
+```
+
+Build the production docker image and load into minikube's local image store.
+```
+$ docker build --target production --tag todo-app:prod .
+$ minikube image load todo-app:prod
+```
+
+Deploy the service and the deployment with kubectl
+```
+$ kubectl apply -f kubernetes/deployment.yaml
+$ kubectl apply -f kubernetes/service.yaml
+```
+
+Finally, run the following command to link localhost with your minikube service.
+```
+$ kubectl port-forward service/module-14 5000:5000
+```
+
+You should now be able to access the todoapp at `localhost:5000`.
+
 ## Azure
 
 The app is deployed to Azure from the Docker Hub container registry, with resources set up via terraform.
